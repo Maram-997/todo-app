@@ -9,6 +9,7 @@ const ToDo = () => {
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem);
 
+  
   function addItem(item) {
     console.log(item);
     item.id = uuid();
