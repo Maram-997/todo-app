@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import LoginProvider,{LoginContext} from './context/loginContext';
 import App from './app.js';
 
 class Main extends React.Component {
   render() {
-    return <App />;
+    return (
+      <LoginProvider>
+      <App />
+      </LoginProvider>
+    )
   }
 }
 
