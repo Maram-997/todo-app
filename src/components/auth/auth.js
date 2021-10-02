@@ -1,24 +1,26 @@
 import React from 'react';
 import {When} from 'react-if';
+import { useContext } from "react";
 
-import { LoginContext } from './context.js';
 
+import { LoginContext } from "./context";
 
-function Login(props){
+function Auth(props){
   //static contextType = LoginContext;
-  const context = useContext(SettingsContext);
+  const context = useContext(LoginContext);
 
 
-    const isLoggedIn = this.context.loggedIn;
-    const canDo = this.props.capability ? this.context.can(this.props.capability) : true;
+    const isLoggedIn = context.loggedIn;
+    const canDo = props.capability ? context.can(props.capability) : true;
     const okToRender = isLoggedIn && canDo;
 
     return (
       <When condition={okToRender}>
-        {this.props.children}
+        {props.children}
       </When>
     );
   }
 
 
-export default Login;
+ export default Auth;
+

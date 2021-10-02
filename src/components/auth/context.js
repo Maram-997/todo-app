@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import cookie from 'react-cookies';
 import jwt from 'jsonwebtoken';
-import { useEffect, useState } from 'react';
 const testUsers = {
   admin: {password:'password', name:'Administrator', role:'admin', capabilities:['create','read','update','delete']},
   editor: { password: 'password', name: 'Editor', role: 'editor', capabilities: ['read', 'update']},
@@ -25,23 +24,23 @@ function LoginProvider(props){
 const [loggedIn, setLoggedIn] = useState(false)
 const [user, setUser] = useState({});
 
-  can = (capability) => {
-    return this?.state?.user?.capabilities?.includes(capability);
+let  can = (capability) => {
+    return state?.user?.capabilities?.includes(capability);
   }
 
-  login = (username, password) => {
+ let login = (username, password) => {
     if (testUsers[username]) {
       // Create a "good" token, like you'd get from a server
       const token = jwt.sign(testUsers[username], process.env.REACT_APP_SECRET);
-      this.validateToken(token);
+      validateToken(token);
     }
   }
 
-  logout = () => {
-    this.setLoginState(false, null, {});
+ let logout = () => {
+    setLoginState(false, null, {});
   };
 
-  validateToken = token => {
+let  validateToken = token => {
     try {
       let user = jwt.verify(token, process.env.REACT_APP_SECRET);
       setLoginState(true, token, user);
@@ -53,7 +52,7 @@ const [user, setUser] = useState({});
 
   };
 
-  setLoginState = (loggedIn, token, user) => {
+ let setLoginState = (loggedIn, token, user) => {
     cookie.save('auth', token);
     //this.setState({ token, loggedIn, user });
     setLoggedIn(loggedIn);
@@ -65,12 +64,20 @@ const [user, setUser] = useState({});
     const qs = new URLSearchParams(window.location.search);
     const cookieToken = cookie.load('auth');
     const token = qs.get('token') || cookieToken || null;
-    this.validateToken(token);
+   validateToken(token);
   }, [])
 
+  const state = {
+    loggedIn,
+    login,
+    logout,
+    user,
+    can
+}
+
     return (
-      <LoginContext.Provider value={this.state}>
-        {this.props.children}
+      <LoginContext.Provider value={state}>
+        {props.children}
       </LoginContext.Provider>
     );
   

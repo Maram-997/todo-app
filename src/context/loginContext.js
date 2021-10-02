@@ -4,7 +4,8 @@ import base64 from 'base-64';
 import cookie from 'react-cookies';
 import jwt from 'jsonwebtoken';
 export const LoginContext = React.createContext();
-const API = '';
+const API = 'https://todo-backend-5.herokuapp.com/';
+
  export default function LoginProvider(props) {
     
     const [loggedIn, setLoggedIn] = useState(false);
@@ -35,7 +36,6 @@ const API = '';
     useEffect(() => {
         const myTokenCookie = cookie.load('token'); 
         console.log("myTokenCookie: ", myTokenCookie)
-        console.log("initial render here !!");
         validateMyToken(myTokenCookie);
     }, []);
     function validateMyToken  (token) {

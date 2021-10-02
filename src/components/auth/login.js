@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {When} from 'react-if';
-
-import { LoginContext } from './context.js';
+import { useContext } from "react";
+//import { context } from './context.js';
+import { LoginContext } from "./context";
 
 function login (props)  {
   //static contextType = LoginContext;
-  const context = useContext(SettingsContext);
+
+  const context = useContext(LoginContext);
+
   // constructor(props) {
   //   super(props);
   //   this.state = { username: '', password: '' };
@@ -14,35 +17,40 @@ function login (props)  {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  handleChange = e => {
-    //this.setState({ [e.target.name]: e.target.value });
-    context.login(username, password);
-  };
+let inputSubmit = e =>{
+  setPassword(e.target.value)
+}
+let passwordSubmit = e =>{
+  setUsername(e.target.value)
+}
 
-  handleSubmit = e => {
+ let handleSubmit = async e => {
     e.preventDefault();
-    this.context.login(this.state.username, this.state.password);
+   await context.login(username,password);
+    window.location.href="/"
   };
     return (
       <>
-        <When condition={this.context.loggedIn}>
-          <button onClick={this.context.logout}>Log Out</button>
+        <When condition={context.loggedIn}>
+          <button onClick={context.logout}>Log Out</button>
         </When>
 
-        <When condition={!this.context.loggedIn}>
-          <form onSubmit={this.handleSubmit}>
+        <When condition={!context.loggedIn}>
+          <form onSubmit={handleSubmit}>
             <input
               placeholder="UserName"
               name="username"
-              onChange={this.handleChange}
+              type='text'
+              nChange={inputSubmit }
             />
             <input
               placeholder="password"
               name="password"
-              onChange={this.handleChange}
+              type='password'
+              onChange={passwordSubmit}
             />
             <button>Login</button>
-          </form>
+          </form> 
         </When>
       </>
     );

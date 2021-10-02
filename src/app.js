@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Settings from './context/settingsContext.js';
+import SettingsContext from './context/settingsContext.js';
 import ToDo from './components/todo/todo.js';
 import Header from './components/header.js';
 import 'normalize.css';
@@ -7,7 +7,6 @@ import '@blueprintjs/core/lib/css/blueprint.css'
 import '@blueprintjs/icons/lib/css/blueprint-icons.css'
 import Footer from './components/footer.js';
 import SettingForm from './components/SettingForm.js';
-import LoginForm from './components/login/login';
 import { LoginContext } from './context/loginContext';
 import { If, Else, Then } from "react-if";
 import {
@@ -15,41 +14,44 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import Signup from "./components/login/signup.js";
+
+import Auth from "./components/auth/auth";
+import LoginProvider from "./components/auth/context";
+import Login from "./components/auth/login";
+
 export default function App(props) {
 
   const context = useContext(LoginContext);
 
   return (
-    <Router>
-      <Switch>
-        <If condition={context.loggedIn == true}>
-          {console.log(context)}
-          <Then>
-            <Settings>
-              <Route exact path="/">
-                <Header />
-                <ToDo />
-                <Footer />
-              </Route>
-              <Route path="/form">
-                <Header />
-                <SettingForm />
-                <Footer />
-              </Route>
-            </Settings>
-          </Then>
-          <Else>
+    <>
+      <If condition={context.loggedIn == true}>
+        {console.log(context)}
+       <Then>
+       <Router>
+        <Switch>
+          <SettingsContext>
             <Route exact path="/">
-              <LoginForm />
+              <Header />
+              <ToDo />
+              <Footer />
             </Route>
-            <Route path="/signup">
-              <Signup />
+            <Route path="/form">
+              <Header />
+              <SettingForm />
+              <Footer />
             </Route>
-          </Else>
-        </If>
-      </Switch>
-    </Router>
+          </SettingsContext>
+        </Switch>
+      </Router>
+       </Then>    
+        <Else>
+          <LoginProvider>
+            <Login />
+          </LoginProvider>
+        </Else>
+      </If>
+    </>
   );
 
 }
